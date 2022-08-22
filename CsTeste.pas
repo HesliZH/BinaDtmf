@@ -23,8 +23,12 @@ var
   MediaPlayer : TMediaPlayer;
 begin
   try
+    {$REGION 'Criar objetos media player'}
     MediaPlayer := TMediaPlayer.Create(Application);
     MediaPlayer.Close;
+    {$ENDREGION}
+
+    {$REGION 'Localiza o microfone'}
     StrPCopy(TempFileName, NewFileName);
     MciOpen.lpstrDeviceType := 'waveaudio';
     MciOpen.lpstrElementName := '';
@@ -33,14 +37,21 @@ begin
     DeviceID := MciOpen.wDeviceId;
     MciRecord.dwTo := 1;
     Flags := Mci_To or Mci_Wait;
+    {$ENDREGION}
+
+    {$REGION 'Manda comando para gravação da faixa de audio'}
     MCIResult := MciSendCommand(DeviceID, Mci_Record, Flags, LongInt(@MciRecord));
     mciPlay.dwFrom := 0;
     Flags := Mci_From or Mci_Wait;
     MciSendCommand(DeviceId, Mci_Play, Flags, LongInt(@MciPlay));
     mciSave.lpfileName := TempFilename;
     Flags := MCI_Save_File or Mci_Wait;
+    {$ENDREGION}
+
+    {$REGION 'Manda comando para gravação do arquivo .wav em disco'}
     MCIResult := MciSendCommand(DeviceID, MCI_Save, Flags, LongInt(@MciSave));
     Result := MciSendCommand(DeviceID, Mci_Close, 0, LongInt(nil)) = 0;
+    {$ENDREGION}
   finally
     FreeAndNil(MediaPlayer)
   end;

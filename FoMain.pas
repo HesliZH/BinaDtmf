@@ -57,13 +57,11 @@ end;
 
 procedure TFormMain.BtDeletaPorraClick(Sender: TObject);
 begin
-//  MpMain.Close;
   DeleteFile(Arquivo);
 end;
 
 procedure TFormMain.BtFMXMediaClick(Sender: TObject);
 begin
-  // Get access to the default audio capture device
   AudioCapture:= TCaptureDeviceManager.Current.DefaultAudioCaptureDevice;
   if Assigned(AudioCapture) then
   begin
@@ -82,10 +80,6 @@ procedure TFormMain.BtIniciarGravacaoClick(Sender: TObject);
 begin
   if not FileExists(Arquivo) then
     CreateNewWave(Arquivo);
-
-//  Self.MpMain.FileName := Arquivo;
-//  MpMain.Open;
-//  MpMain.StartRecording;
 end;
 
 procedure TFormMain.BtStopGravacaoClick(Sender: TObject);
